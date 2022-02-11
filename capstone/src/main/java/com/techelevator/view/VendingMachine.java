@@ -4,14 +4,29 @@ import com.sun.jdi.InvalidTypeException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.util.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.text.SimpleDateFormat;
+
+
 
 public class VendingMachine {
 
     public static void main(String[] args) {
 
-        // VENDING MACHINE SET-UP
+
+        File log = new File("log.txt");
+       try( PrintWriter printWriter = new PrintWriter(new FileOutputStream (log, true))){
+
+
         Change change = new Change();
         File inventoryFile = new File("vendingmachine.csv");
         Map<String, Item> itemMap = new TreeMap<>();
@@ -54,6 +69,10 @@ public class VendingMachine {
             String selection = scanner.nextLine();
             switch (selection) {
                 case "3":
+
+                    printWriter.flush();
+                    printWriter.close();
+
                     System.exit(1);
                     break;
                 case "1":
@@ -79,6 +98,10 @@ public class VendingMachine {
                                     }
                                     BigDecimal bd = new BigDecimal(moneyEntered);
                                     moneyFed = bd.add(moneyFed);
+                                    DateFormat dateFormat = new SimpleDateFormat(" MM/dd/yyyy hh:mm:ss aa");
+                                    String dateString = dateFormat.format(new Date()).toString();
+                                    printWriter.println( dateString + " Feed Money $ " + moneyEntered  + " $ " + moneyFed);
+
                                     break;
                                 } catch (Exception e) {
                                     System.out.println("That aint money Try again");
@@ -112,7 +135,9 @@ public class VendingMachine {
                                     moneyFed = BigDecimal.ZERO;
                                     onSecondMenu = false;
                                     onFirstMenu = true;
+
                                     break;
+
                         }
 
 
@@ -120,7 +145,11 @@ public class VendingMachine {
             }
         }
 
+    }
+       catch (FileNotFoundException e){
+        e.getMessage();
 
+    }
     }
 
 }
