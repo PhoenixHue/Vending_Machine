@@ -8,7 +8,7 @@ public class Change {
     private int nickels;
 
     public String getChange(BigDecimal moneyFed) {
-        double moneyFedInt = moneyFed.doubleValue() * 100.00;
+        double moneyFedInt = Math.ceil(moneyFed.doubleValue() * 100.00);
         this.quarters = (int)(moneyFedInt / 25.00);
         double remainingChange = (moneyFedInt % 25.00);
         this.dimes = (int)(remainingChange / 10.00);
