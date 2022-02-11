@@ -21,8 +21,6 @@ import java.text.SimpleDateFormat;
 public class VendingMachine {
 
     public static void main(String[] args) {
-
-
         File log = new File("log.txt");
        try( PrintWriter printWriter = new PrintWriter(new FileOutputStream (log, true))){
 
@@ -61,7 +59,7 @@ public class VendingMachine {
         // BEGIN VENDING MACHINE FUNCTION
         boolean onFirstMenu = true;
         BigDecimal moneyFed = new BigDecimal(0);
-        System.out.println("Welcome to Vendomatic 800! (Owned by Umbrella Corp)");
+        System.out.println("Welcome to Vendo-matic 800! (Owned by Umbrella Corp)");
         while (onFirstMenu) {
             System.out.println();
             System.out.println("(1) Display Vending Machine Items\n(2) Purchase\n(3) Exit");
@@ -100,11 +98,11 @@ public class VendingMachine {
                                     moneyFed = bd.add(moneyFed);
                                     DateFormat dateFormat = new SimpleDateFormat(" MM/dd/yyyy hh:mm:ss aa");
                                     String dateString = dateFormat.format(new Date()).toString();
-                                    printWriter.println( dateString + " Feed Money $ " + moneyEntered  + " $ " + moneyFed);
+                                    printWriter.println( dateString + " FEED MONEY $ " + moneyEntered  + " $ " + moneyFed);
 
                                     break;
                                 } catch (Exception e) {
-                                    System.out.println("That aint money Try again");
+                                    System.out.println("Please enter a valid funds amount.");
                                     break;
                                 }
                             case "2":
@@ -124,14 +122,28 @@ public class VendingMachine {
                                     System.out.println("Sorry, this item is SOLD OUT. Please try again!");
                                     System.out.println();
                                     continue;
+                                } else if (moneyFed.compareTo(itemMap.get(itemSelected).getPrice()) == -1) {
+                                    System.out.println("Funds insufficient. Please insert additional funds and try again! ");
+                                    System.out.println();
+                                    continue;
+
                                 } else {
                                     System.out.println(itemMap.get(itemSelected).getName() + " $" + itemMap.get(itemSelected).getPrice() + " " + itemMap.get(itemSelected).getMessage());
+                                    DateFormat dateFormat = new SimpleDateFormat(" MM/dd/yyyy hh:mm:ss aa");
+                                    String dateString = dateFormat.format(new Date()).toString();
+                                    printWriter.println( dateString + " " + itemMap.get(itemSelected).getName() +
+                                            " " + itemSelected + " $" + moneyFed + " $" + moneyFed.subtract(itemMap.get(itemSelected).getPrice()) );
+
                                     moneyFed = moneyFed.subtract(itemMap.get(itemSelected).getPrice());
                                     itemMap.get(itemSelected).buyItem();
+
                                     break;
                                 }
                                 case "3":
                                     System.out.println(change.getChange(moneyFed));
+                                    DateFormat dateFormat = new SimpleDateFormat(" MM/dd/yyyy hh:mm:ss aa");
+                                    String dateString = dateFormat.format(new Date()).toString();
+                                    printWriter.println( dateString + " GIVE CHANGE $ " + moneyFed + " $0.00");
                                     moneyFed = BigDecimal.ZERO;
                                     onSecondMenu = false;
                                     onFirstMenu = true;
