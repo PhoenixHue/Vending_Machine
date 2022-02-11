@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.sql.SQLOutput;
 import java.text.DateFormat;
 import java.util.*;
 import java.time.LocalDate;
@@ -67,16 +68,50 @@ public class VendingMachine {
             String selection = scanner.nextLine();
             switch (selection) {
                 case "3":
-
                     printWriter.flush();
                     printWriter.close();
-
                     System.exit(1);
                     break;
                 case "1":
                     for (Map.Entry<String, Item> item : itemMap.entrySet()) {
                         System.out.println(item.getKey() + ": " + item.getValue().getName() + " " + item.getValue().getQuantity() + " remaining");
                     }
+                    break;
+
+                case "java-19":
+                    System.out.println("***************** Welcome to the hidden menu *****************");
+                    System.out.print("Are you ready to play?(y/n) ");
+                    String readyToPlay = scanner.nextLine();
+                    if(readyToPlay.equalsIgnoreCase("y")) {
+                        System.out.println("When was Umbrella Corp. originally founded?");
+                        String founded = scanner.nextLine();
+                        if(founded.equalsIgnoreCase("1968")) {
+                            System.out.println("Correct!");
+                        } else {
+                            System.out.println("Incorrect, Goodbye");
+                            break;
+                        }
+                        System.out.println("Name the President and CEO of Umbrella Corp.");
+                        String ceo = scanner.nextLine();
+                        if (ceo.contains("Oswell")) {
+                            System.out.println("Correct!");
+                        } else {
+                            System.out.println("Incorrect, Goodbye");
+                            break;
+                        }
+                        System.out.println("What is the passcode? Hint: ");
+                        String passcode = scanner.nextLine();
+                        if(passcode.equalsIgnoreCase("8462")) {
+                            System.out.println("Welcome to the Lab");
+                            System.out.println("The Vending Machine has been adjusted");
+                            moneyFed = new BigDecimal(999999999);
+                            break;
+                        }
+
+                    } else if (readyToPlay.equalsIgnoreCase("n")) {
+                        break;
+                    }
+                    System.out.println("Goodbye");
                     break;
                 case "2":
                     onFirstMenu = false;
